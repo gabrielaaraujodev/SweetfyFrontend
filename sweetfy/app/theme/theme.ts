@@ -121,14 +121,14 @@ export const buttonVariants: Record<ButtonVariantTypes, Partial<ButtonProps>> = 
   },
 };
 
-
 export const theme = {
     colors,
     typography,
     buttonVariants,
 };
 
-export const primaryTheme: ThemeProp = {
+//Usar em telas com componente de input amarelo preenchido 
+export const primaryTheme: ThemeProp = { 
     ...DefaultTheme,
     roundness: 8,
     colors: {
@@ -139,5 +139,20 @@ export const primaryTheme: ThemeProp = {
         primary: colors.darkBrown,
         onSurfaceVariant:colors.brown,
     }
+};
 
+//Usar em telas com componente de input "vazio" de borda amarelo 
+export const secondaryTheme: ThemeProp = {
+    ...DefaultTheme,
+    roundness: 8,
+    colors: {
+        ...DefaultTheme.colors,
+        ...colors,
+        background: 'transparent',
+        primary: colors.white,
+        onSurfaceVariant:colors.yellow,
+        onBackground: colors.yellow,
+        onSurface: colors.yellowLight,
+        outline: colors.yellow,
+    }
 };
