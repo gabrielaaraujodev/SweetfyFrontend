@@ -2,6 +2,7 @@ import { theme } from '@/theme/theme';
 import * as React from 'react';
 import { Image } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MenuComponent = () => {
   const [state, setState] = React.useState({ open: false });
@@ -18,18 +19,24 @@ const MenuComponent = () => {
   const actionLabelStyle = {
     ...theme.typography.p_medium,
     backgroundColor: theme.colors.brown,
+    color: theme.colors.inputWhite,
     padding: 6,
     borderRadius: 8,
     minWidth: 150,
     textAlign: 'center',
   };
 
+  const { bottom: bottomInset } = useSafeAreaInsets();
   return (
     <Portal>
       <FAB.Group
         backdropColor="transparent"
         color={theme.colors.white}
-        fabStyle={{ backgroundColor: theme.colors.brown, transform: '' }}
+        style={{
+          position: 'absolute',
+          bottom: bottomInset + 50,
+        }}
+        fabStyle={{ backgroundColor: theme.colors.brown }}
         open={open}
         visible
         icon={open ? 'close' : 'plus'}
