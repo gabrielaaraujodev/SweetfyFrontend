@@ -88,7 +88,7 @@ const typography= {
 const colors ={
     brown: '#9C503B',
     darkBrown: '#5f3124',
-    lighBrown: '#F5EEEB',
+    lightBrown: '#F5EEEB',
     yellow: '#FBEAA4',
     yellowLight: '#FFFFFD',
     inputWhite: '#FFFFFF',
@@ -103,7 +103,7 @@ export type ButtonVariantTypes = 'brownLight' | 'outlined' | 'yellow';
 export const buttonVariants: Record<ButtonVariantTypes, Partial<ButtonProps>> = {
   brownLight: {
     mode: 'contained', 
-    buttonColor: colors.lighBrown,
+    buttonColor: colors.lightBrown,
     textColor: colors.brown,
   },
   outlined: {
@@ -121,14 +121,14 @@ export const buttonVariants: Record<ButtonVariantTypes, Partial<ButtonProps>> = 
   },
 };
 
-
 export const theme = {
     colors,
     typography,
     buttonVariants,
 };
 
-export const primaryTheme: ThemeProp = {
+//Usar em telas com componente de input amarelo preenchido 
+export const primaryTheme: ThemeProp = { 
     ...DefaultTheme,
     roundness: 8,
     colors: {
@@ -139,5 +139,20 @@ export const primaryTheme: ThemeProp = {
         primary: colors.darkBrown,
         onSurfaceVariant:colors.brown,
     }
+};
 
+//Usar em telas com componente de input "vazio" de borda amarelo 
+export const secondaryTheme: ThemeProp = {
+    ...DefaultTheme,
+    roundness: 8,
+    colors: {
+        ...DefaultTheme.colors,
+        ...colors,
+        background: 'transparent',
+        primary: colors.white,
+        onSurfaceVariant:colors.yellow,
+        onBackground: colors.yellow,
+        onSurface: colors.yellowLight,
+        outline: colors.yellow,
+    }
 };
