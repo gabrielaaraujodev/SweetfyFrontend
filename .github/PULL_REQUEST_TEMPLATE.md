@@ -1,4 +1,4 @@
-Por favor, use o seguinte formato **exato** para o título:
+Sugestão de nome de branch
 
 [nome-da-branch-de-origem] --> [target-branch]
 
