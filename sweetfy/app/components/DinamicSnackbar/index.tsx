@@ -1,18 +1,18 @@
 import { H5, H6 } from '@/theme/fontsTheme';
 import { StyledSnackbar } from './style';
 
+export type DinamicSnackbarType = 'success' | 'error';
+
 interface IDinamicSnackbar {
   isVisible: boolean;
   OnDismissFunction(): void;
-  messageTitle: string;
-  message: string;
+  type: DinamicSnackbarType;
 }
 
 const DinamicSnackbar = ({
   isVisible,
   OnDismissFunction,
-  messageTitle,
-  message,
+  type,
 }: IDinamicSnackbar) => {
   return (
     <StyledSnackbar
@@ -23,9 +23,12 @@ const DinamicSnackbar = ({
         colorKey="brown"
         style={{ marginBottom: 8 }}
       >
-        {messageTitle}
+        {type === 'success' ? 'Sucesso :)' : 'Algo deu errado :('}
       </H5>
-      <H6 colorKey="brown">{message}</H6>
+      <H6 colorKey="brown">
+        {' '}
+        {type === 'success' ? 'Tudo certo!' : 'Tudo aconteceu como o esperado!'}
+      </H6>
     </StyledSnackbar>
   );
 };

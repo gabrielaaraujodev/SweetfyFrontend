@@ -1,17 +1,17 @@
 import DinamicButton from '@/components/Buttons';
 import DividerWithText from '@/components/DividerWithText';
 import InputItens from '@/components/Inputs';
-import { H1, H5, H6 } from '@/theme/fontsTheme';
 import { primaryTheme, theme } from '@/theme/theme';
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { ActivityIndicator, Snackbar, Surface } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '@/context/AuthContext';
 import { router } from 'expo-router';
 import { fetchLogin } from '../../api/auth/auth';
 import AuthTemplate from '@/components/Templates/auth';
 import { InputsContent } from '@/components/Templates/auth/styles';
-import DinamicSnackbar from '@/components/DinamicSnackbar';
+import DinamicSnackbar, {
+  DinamicSnackbarType,
+} from '@/components/DinamicSnackbar';
 
 const LoginPageComponent = () => {
   const [email, setEmail] = useState('');
@@ -19,32 +19,22 @@ const LoginPageComponent = () => {
   const [loading, setLoading] = useState(false);
 
   const [showResponseStatus, setShowResponseStatus] = useState(false);
-  const [responseStatusMessage, setResponseStatusMessage] = useState('');
+  const [responseStatusMessage, setResponseStatusMessage] =
+    useState<DinamicSnackbarType>('error');
 
   const { signIn } = useAuth();
 
-  const errorMessage = (status: number) => {
-    if (!email || !password)
-      return setResponseStatusMessage('Por favor, preencha todos os campos!');
-    if (status >= 500)
-      return setResponseStatusMessage(
-        'Erro ao tentar fazer login. Tente novamente mais tarde.'
-      );
-    if (status >= 400)
-      return setResponseStatusMessage(
-        'Erro ao tentar fazer login. Confira os dados e tente novamente.'
-      );
-  };
   const handleLogin = async () => {
     try {
       setEmail('');
       setPassword('');
       setLoading(true);
       const response = await fetchLogin({ email, password });
+      setResponseStatusMessage('success');
       signIn(response.accessToken);
     } catch (error: any) {
       console.log(error);
-      errorMessage(error.status);
+      setResponseStatusMessage('error');
     } finally {
       setShowResponseStatus(true);
       setLoading(false);
@@ -104,8 +94,7 @@ const LoginPageComponent = () => {
       <DinamicSnackbar
         isVisible={showResponseStatus}
         OnDismissFunction={() => setShowResponseStatus(false)}
-        messageTitle="Algo deu errado no cadastro ):"
-        message="Confirme os dados e tente novamente"
+        type={responseStatusMessage}
       />
     </AuthTemplate>
   );
