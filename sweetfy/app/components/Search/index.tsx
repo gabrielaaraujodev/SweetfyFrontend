@@ -4,7 +4,7 @@ import { primaryTheme } from '@/theme/theme';
 
 interface ISearchComponent {
   placeholderText: string;
-  handleSearch?: () => void;
+  handleSearch?: () => void; //tornar obrigatório depois
 }
 
 const SearchComponent = ({
@@ -25,7 +25,8 @@ const SearchComponent = ({
       rightIconFunction={searchFunction}
       inputStyle={{ height: 40 }}
       containerStyle={{ flex: 1 }}
-      getInputValue={setSearchTexValue}
+      setInputValue={setSearchTexValue}
+      value={searchTextValue}
     />
   );
 };

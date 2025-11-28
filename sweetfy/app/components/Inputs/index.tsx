@@ -6,14 +6,15 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { HelperText, TextInput } from 'react-native-paper'; // implementar mensagens de erros mais específicas se der tempo
 import { Container } from './style';
 import { ThemeProp } from 'react-native-paper/lib/typescript/types';
 
 interface IInputProps {
   theme: ThemeProp;
   placeholder: string;
-  getInputValue: (value: any) => void;
+  value: string;
+  setInputValue: (value: any) => void;
   inputMode: InputModeOptions;
   title?: string;
   titleColor?: ColorKey;
@@ -38,10 +39,10 @@ const InputItens = ({
   rightIcon,
   inputStyle,
   containerStyle,
-  getInputValue,
+  value,
+  setInputValue,
   rightIconFunction,
 }: IInputProps) => {
-  const [inputValue, setInputValue] = useState('');
   const [showInputValue, setShowInputValue] = useState(securityRequired);
 
   const handleShowInputValue = () => {
@@ -75,11 +76,6 @@ const InputItens = ({
     activeOutlineColor: 'transparent',
   };
 
-  const handleChangeText = (value: any) => {
-    getInputValue(value);
-    setInputValue(value);
-  };
-
   const effectiveInputMode = securityRequired ? 'text' : inputMode;
 
   return (
@@ -96,9 +92,9 @@ const InputItens = ({
         mode="outlined"
         theme={theme}
         inputMode={effectiveInputMode}
-        value={inputValue}
+        value={value}
         placeholder={placeholder}
-        onChangeText={(value) => handleChangeText(value)}
+        onChangeText={setInputValue}
         secureTextEntry={showInputValue}
         right={effectiveInputIcon()}
         style={inputStyle}

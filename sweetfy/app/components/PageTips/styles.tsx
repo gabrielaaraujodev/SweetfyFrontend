@@ -2,12 +2,13 @@ import styled from 'styled-components/native';
 import { theme } from '@/theme/theme';
 import { Appbar, Surface } from 'react-native-paper';
 
-interface IHeaderStyles {
+interface IPageTipsStyles {
   flexDirection?: 'row' | 'column';
   lineHeight?: number;
+  lineColor?: string;
 }
 
-export const HeaderContainerStyled = styled(Surface)<IHeaderStyles>`
+export const HeaderContainerStyled = styled(Surface)<IPageTipsStyles>`
   background-color: ${theme.colors.yellowLight};
   width: 100%;
   display: flex;
@@ -27,10 +28,25 @@ export const StyledAppBar = styled(Appbar)`
   elevation: 8;
 `;
 
-export const Line = styled.View<IHeaderStyles>`
+export const DividerWithTextContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  margin: 20px 0;
+`;
+
+export const HorizontalLines = styled.View`
+  flex: 1;
+  height: 1px;
+  background-color: ${theme.colors.lightBrown};
+`;
+
+export const Line = styled.View<IPageTipsStyles>`
   width: 100%;
   height: ${({ lineHeight }) => lineHeight};
-  background-color: ${theme.colors.white};
+  background-color: ${({ lineColor }) =>
+    lineColor ? lineColor : theme.colors.white};
+  flex: 1;
 `;
 
 export const PropsContainer = styled.View`
