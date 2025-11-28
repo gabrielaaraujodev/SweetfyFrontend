@@ -10,9 +10,9 @@ export default function TabsLayout() {
       screenOptions={{ headerShown: false }}
     >
       <Tabs.Screen
-        name="teste"
+        name="logout"
         options={{
-          title: 'Teste',
+          title: 'logout',
           tabBarIcon: ({ focused, size }) => (
             <Image
               source={require('../../assets/icons/logout.png')}
