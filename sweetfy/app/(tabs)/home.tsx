@@ -91,7 +91,7 @@ const HomePage = () => {
             contentContainerStyle={{ padding: 20 }}
             showsVerticalScrollIndicator={false}
           >
-            <ItemsContainer onPress={() => router.push('/seeMoreProducts')}>
+            <ItemsContainer onPress={() => router.push('/seeMoreOrders')}>
               <H4 colorKey="darkBrown">Encomendas</H4>
               <H6
                 colorKey="darkBrown"

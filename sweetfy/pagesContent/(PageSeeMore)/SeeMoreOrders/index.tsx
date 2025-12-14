@@ -1,78 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { OrderData } from '@/components/Cards/OrderCard';
-
+import CardOrder, { OrderData } from '@/components/Cards/OrderCard';
+import { theme } from '@/theme/theme';
 import DinamicButton from '@/components/Buttons';
 import ListOrders from '@/components/ListOfCards/ListOrders';
 import { ContainerHomePage, ViewTitle } from './style';
+import DinamicHeader from '@/components/PageTips/DinamicHeader';
+import { H4, H6_medium } from '@/theme/fontsTheme';
+import { IconButton } from 'react-native-paper';
+import { IOrder } from '@/api/register/types';
+import { epDeleteManyOrders, epDeleteOrder, epGetOrders } from '@/api/register/registerItem';
+import ProductCard from '@/components/CardsV2/ProductCard';
 
-const mockOrders = [
-  {
-    id: 1,
-    name: 'Bolo de morango',
-    description: 'Encomenda realizada pela Eliana, no bairro Taquaril',
-    totalYield: 5,
-    totalCost: 200,
-    salePrice: 100,
-    profit: 100,
-    status: 'Em produção',
-    orderProducts: [
-      {
-        productId: 1,
-        name: 'Bolo de Cenoura',
-        preparation: 'Misture a cenoura, ovo e farinha e leve ao forno.',
-        salePrice: 45.5,
-        profitPercent: 25,
-        productIngredients: [
-          {
-            id: 1,
-            ingredientId: 1,
-            ingredientName: 'Leite condesado',
-            quantity: 3,
-            unit: 'kilo',
-            unitPriceSnapshot: 5,
-            itemCost: 15,
-          },
-        ],
-        productRecipes: [
-          {
-            id: 1,
-            recipeId: 1,
-            recipeName: 'Brigadeiro Simples',
-            quantity: 2,
-            unitPriceSnapshot: 10.5,
-            costSnapshot: 5.25,
-            totalCost: 10.5,
-            totalProfit: 10.5,
-          },
-        ],
-        productServices: [
-          {
-            id: 1,
-            name: 'Uber',
-            description: 'Entrega',
-            providerName: 'Marcelo',
-            unit: 'Dinheiro',
-            unitPrice: 10,
-          },
-        ],
-      },
-    ],
-    orderRecipes: [
-      {
-        id: 1,
-        recipeId: 1,
-        recipeName: 'Brigadeiro Simples',
-        quantity: 5,
-        unitPriceSnapshot: 10.5,
-        costSnapshot: 5.25,
-        totalCost: 26.25,
-        totalProfit: 26.25,
-      },
-    ],
-  },
-];
 
 const SeeMoreOrders = () => {
   const [isSelectionModeActive, setIsSelectionModeActive] = useState(false);
@@ -80,7 +20,23 @@ const SeeMoreOrders = () => {
 
   const router = useRouter();
 
-  const handleNavigateToDetailsOrder = (order: OrderData) => {
+  const [Orders, setOrders] = useState<IOrder[]>([]);
+
+  const getProducts = async () => {
+      try {
+        const response = await epGetOrders();
+        setOrders(response);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+  
+    useEffect(() => {
+      getProducts();
+    }, []);
+
+
+  const handleNavigateToDetailsOrder = (order: IOrder) => {
     const orderDataString = JSON.stringify(order);
     router.push({
       pathname: '/DetailsOrder',
@@ -105,8 +61,8 @@ const SeeMoreOrders = () => {
     setIsSelectionModeActive((prev) => !prev);
   };
   const handleSelectAllPress = () => {
-    const allIds = mockOrders.map((o) => o.id);
-    const currentlyAllSelected = selectedItemIds.length === mockOrders.length;
+    const allIds = Orders.map((o) => o.id);
+    const currentlyAllSelected = selectedItemIds.length === Orders.length;
 
     if (currentlyAllSelected) {
       setSelectedItemIds([]);
@@ -119,117 +75,69 @@ const SeeMoreOrders = () => {
     }
   };
 
+   const handleDelete = async () => {
+      try {
+        if (selectedItemIds.length > 1) {
+          await epDeleteManyOrders(selectedItemIds);
+        } else {
+          await epDeleteOrder(selectedItemIds[0]);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        getProducts();
+      }
+    };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <ContainerHomePage>
-        <Text> Header </Text>
+      <View style={{}}>
+        <DinamicHeader></DinamicHeader>
 
-        <View style={{ backgroundColor: '#f1e5ebff' }}>
-          <ViewTitle> Encomendas</ViewTitle>
+        <View 
+          style={{
+            backgroundColor: theme.colors.lightBrown,
+            flexDirection: 'column',
+            gap: 10,
+            padding: 10,
+          }}
+        >
 
-          <View style={{ flex: 1, flexDirection: 'column', gap: 10 }}>
-            <View style={{ flex: 1, flexDirection: 'row', gap: 10 }}>
-              <DinamicButton
-                type="brownLight"
-                onPress={handleSelectPress}
-                buttonText="Selecionar"
-                buttonStyle={{
-                  margin: 10,
-                  width: 150,
-                  backgroundColor: 'white',
-                }}
-              />
+          <H4 colorKey="darkBrown">Encomendas</H4>
 
-              <DinamicButton
-                type="brownLight"
+          <View style={{ flex: 1, flexDirection: 'row', gap: 10 }}>
+            <H6_medium
+              onPress={handleSelectPress}
+              colorKey="darkBrown"
+              style={{ backgroundColor: theme.colors.yellow, padding: 6 }}
+            >
+              {isSelectionModeActive
+                ? `${selectedItemIds.length} selecionado(s)`
+                : 'Selecionar'}
+            </H6_medium>
+
+            {selectedItemIds.length !== Orders.length && (
+              <H6_medium
                 onPress={handleSelectAllPress}
-                buttonText={
-                  selectedItemIds.length === mockOrders.length
-                    ? 'Remover'
-                    : 'Todos'
-                }
-                disabled={false}
-                buttonStyle={{
-                  margin: 10,
-                  width: 150,
-                  backgroundColor: 'white',
-                }}
-              />
-            </View>
-
-            {isSelectionModeActive ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  gap: 20,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
+                colorKey="darkBrown"
+                style={{ backgroundColor: theme.colors.yellow, padding: 6 }}
               >
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    gap: 15,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      flexDirection: 'row',
-                      gap: 10,
-                      borderRadius: 18,
-                      width: 100,
-                      height: 30,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Image
-                      source={require('../../../assets/icons/edit.png')}
-                      style={{
-                        width: 15,
-                        height: 15,
-                      }}
-                    />
-                    Editar
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    gap: 15,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      flexDirection: 'row',
-                      gap: 10,
-                      borderRadius: 18,
-                      width: 100,
-                      height: 30,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Image
-                      source={require('../../../assets/icons/delete.png')}
-                      style={{
-                        width: 15,
-                        height: 15,
-                      }}
-                    />
-                    Excluir
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : null}
+                Selecionar todos
+              </H6_medium>
+            )}
+            <IconButton
+              icon="trash-can-outline"
+              size={12}
+              style={{ margin: 0 }}
+              iconColor={theme.colors.pinkRed}
+              disabled={selectedItemIds.length === 0}
+              onPress={handleDelete}
+            />
           </View>
 
-          <ListOrders
+          {/* <ListOrders
             onCardPress={handleNavigateToDetailsOrder}
-            data={mockOrders}
+            data={Orders}
             showSelectionControls={isSelectionModeActive}
             selectedItemIds={selectedItemIds}
             onItemSelect={toggleItemSelection}
@@ -241,9 +149,33 @@ const SeeMoreOrders = () => {
             cardItemStyle={{
               backgroundColor: '#FFFFFF',
             }}
-          />
+          /> */}
+
+          
         </View>
-      </ContainerHomePage>
+        <View style={{ padding: 10 }}>
+          {Orders.map((Order, index) => (
+            <View
+              key={index}
+              style={{
+                backgroundColor: isSelectionModeActive
+                  ? theme.colors.backColor
+                  : '',
+                borderRadius: 8,
+                padding: isSelectionModeActive ? 4 : 2,
+              }}
+            >
+              <CardOrder
+                data={Order}
+                key={index} 
+                id={Order.id} 
+                showCheckBox={false} 
+                checkBoxSelected={false}
+              />
+            </View>
+          ))}
+        </View>
+      </View>
     </ScrollView>
   );
 };

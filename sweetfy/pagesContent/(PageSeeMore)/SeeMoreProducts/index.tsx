@@ -92,7 +92,7 @@ const SeeMoreProducts = () => {
             padding: 10,
           }}
         >
-          <H4 colorKey="darkBrown">Receitas</H4>
+          <H4 colorKey="darkBrown">Produtos</H4>
 
           <View style={{ flex: 1, flexDirection: 'row', gap: 10 }}>
             <H6_medium

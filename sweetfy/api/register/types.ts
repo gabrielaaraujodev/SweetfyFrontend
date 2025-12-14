@@ -97,16 +97,16 @@ export interface IProduct{
     productServices:includedServiceDetails[]
 }
 export interface IOrder{
-    id: number,
-    name: string,
-    description: string,
-    salePrice:number,
-    totalYield:number,
-    totalCost:number,
-    profit: number,
-    status: string,
-    createdAt: Date,
-    orderProducts: includedProductDetails[]
+  id: number,
+  name: string,
+  description: string,
+  salePrice:number,
+  totalYield:number,
+  totalCost:number,
+  profit: number,
+  status: string,
+  createdAt: Date,
+  orderProducts: includedProductDetails[]
 }
 
 export interface IRecipeDetails{

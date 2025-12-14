@@ -13,6 +13,9 @@ import {
   ViewPrice,
 } from './style';
 import FieldNameAndValue from '../../FieldNameAndValue';
+import { ListProductsInput } from '@/components/ListProductsInput';
+import { IOrder } from '@/api/register/types';
+import { H5 } from '@/theme/fontsTheme';
 
 export interface OrderData {
   id: number;
@@ -27,7 +30,7 @@ export interface OrderData {
   orderRecipes: Recipe[];
 }
 
-interface Product {
+export interface Product {
   productId: number;
   name: string;
   preparation: string;
@@ -69,7 +72,7 @@ interface Ingredient {
 }
 
 interface CardOrderProps {
-  data: OrderData;
+  data: IOrder;
   id: number;
   showCheckBox: boolean;
   checkBoxSelected: boolean;
@@ -77,7 +80,7 @@ interface CardOrderProps {
   cardStyle?: ViewStyle;
 }
 
-const CardOrder: React.FC<CardOrderProps> = ({
+export const CardOrder: React.FC<CardOrderProps> = ({
   id,
   showCheckBox,
   checkBoxSelected,
@@ -106,14 +109,22 @@ const CardOrder: React.FC<CardOrderProps> = ({
   };
 
   return (
-    <ContainerWithCheckBox>
+    <ContainerWithCheckBox >
       {ControllerCheckBox()}
 
       <ContainerCard>
         <ViewCard>
-          <TitleCard>{data.name}</TitleCard>
+          <H5 colorKey="darkBrown">{data.name}</H5>
 
-          <View>
+          <View
+            style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+             }}
+          >
             <TextCard> {data.description} </TextCard>
           </View>
 
@@ -133,7 +144,7 @@ const CardOrder: React.FC<CardOrderProps> = ({
           </ContainerPrice>
 
           <View>
-            <ListProductsInput items={data.orderProducts} />
+            {/* <ListProductsInput items={data.orderProducts} /> */}
           </View>
         </ViewCard>
       </ContainerCard>

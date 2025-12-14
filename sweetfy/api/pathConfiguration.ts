@@ -4,7 +4,7 @@ import { setSession, } from '@/store/authSlice';
 import { logoutUser } from '@/store/actions';
 import { getStorageItem, setStorageItem } from '@/utils';
 
-export const API_URL = 'https://petrous-lilli-manfully.ngrok-free.dev';
+export const API_URL = 'https://localhost:7286';
 const api = axios.create({
   baseURL: `${API_URL}/api`, 
   headers:{

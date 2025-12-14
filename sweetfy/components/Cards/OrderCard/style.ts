@@ -34,12 +34,18 @@ export const ViewPrice = styled.View`
 `;
 
 export const ContainerWithCheckBox = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-horizontal: 5px;
-  margin-vertical: 8px;
+  border-left-width: 6px;
+  border-left-color: #880741;
+  border-color: #880741;
+  border-width: 1px;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 12px;
+  gap: 12px;
+  margin-left: 10px;
+  min-height: 200px;
+  min-width: 200px;
+  max-width: 300px;
 `;
 
 export const ContainerPrice = styled.View`
@@ -47,6 +53,10 @@ export const ContainerPrice = styled.View`
   flex-direction: row;
   justify-content: space-between;
   
+`;
+
+export const ContainerCard = styled.View`
+  display: flex;  
 `;
 
 export const TitleCard = styled.Text`

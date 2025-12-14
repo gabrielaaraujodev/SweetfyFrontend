@@ -2,8 +2,9 @@ import React, { useMemo } from 'react';
 import { ContainerList } from './style';
 import { ViewStyle, TouchableOpacity } from 'react-native';
 import CardOrder from '@/components/Cards/OrderCard';
+import { IOrder } from '@/api/register/types';
 
-type NavigateFunction = (product: OrderData) => void;
+type NavigateFunction = (product: IOrder) => void;
 
 interface OrderData {
   id: number;
@@ -60,7 +61,7 @@ interface Ingredient {
 }
 
 interface PropsListOfCards {
-  data: OrderData[];
+  data: IOrder[];
   showSelectionControls?: boolean;
   onItemSelect?: (itemId: number) => void;
   selectedItemIds?: number[];
